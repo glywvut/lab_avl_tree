@@ -11,7 +11,7 @@ jobs:
             mkdir build
             cmake -Bbuild -G "Visual Studio 16 2019"       
             cmake --build build
-            .\build\bin\test_tree.exe
+            .\build\bin\test_AVL_tree.exe
     
   linux-build:
     runs-on: ubuntu-latest
@@ -21,4 +21,4 @@ jobs:
             mkdir build
             cmake -Bbuild -G "Unix Makefiles"       
             cmake --build build
-            ./build/bin/test_tree
+            ./build/bin/test_AVL_tree
