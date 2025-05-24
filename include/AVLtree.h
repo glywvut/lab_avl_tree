@@ -14,7 +14,7 @@ public:
         Node* left;
         Node* right;
 
-        Node(const T& val, const int& h = 0) : value(val), height(h), left(nullptr), right(nullptr) {}
+        Node(const T& val, const int& h = 1) : value(val), height(h), left(nullptr), right(nullptr) {}
     };
 
     AVL_Tree() : root(nullptr) {}
@@ -43,35 +43,24 @@ public:
         return (node == nullptr) ? 0 : (getHeight(node->right) - getHeight(node->left));
     }
 
-    void swapNodes(Node* a, Node* b)
+    void rightRotate(Node*& node)
     {
-        T tmp = a->value;
-        a->value = b->value;
-        b->value = tmp;
+        Node* newRoot = node->left;
+        node->left = newRoot->right;
+        newRoot->right = node;
+        updateHeight(node);
+        updateHeight(newRoot);
+        node = newRoot;
     }
 
-    void rightRotate(Node* node)
+    void leftRotate(Node*& node)
     {
-        swapNodes(node, node->left);
-        Node* buffer = node->right;
-        node->right = node->left;
-        node->left = node->right->left;
-        node->right->left = node->right->right;
-        node->right->right = buffer;
-        updateHeight(node->right);
+        Node* newRoot = node->right;
+        node->right = newRoot->left;
+        newRoot->left = node;
         updateHeight(node);
-    }
-
-    void leftRotate(Node* node)
-    {
-        swapNodes(node, node->right);
-        Node* buffer = node->left;
-        node->left = node->right;
-        node->right = node->left->right;
-        node->left->right = node->left->left;
-        node->left->left = buffer;
-        updateHeight(node->left);
-        updateHeight(node);
+        updateHeight(newRoot);
+        node = newRoot;
     }
 
     void makeBalance(Node* node)
@@ -92,28 +81,31 @@ public:
     bool insert(Node*& node, const T val)
     {
         if (node == nullptr)
-        {
-            node = new Node(val);
-            return true;
-        }
+    {
+        node = new Node(val);
+        return true;
+    }
 
-        bool result = false;
-        if (val < node->value)
-        {
-            result = insert(node->left, val);
-        }
-        else if (val > node->value)
-        {
-            result = insert(node->right, val);
-        }
-        else
-        {
-            return false; 
-        }
+    bool inserted = false;
+    if (val < node->value)
+    {
+        inserted = insert(node->left, val);
+    }
+    else if (val > node->value)
+    {
+        inserted = insert(node->right, val);
+    }
+    else
+    {
+        return false; 
+    }
 
+    if (inserted)
+    {
         updateHeight(node);
         makeBalance(node);
-        return result;
+    }
+    return inserted;
     }
 
     Node* findMin(Node* node)
