@@ -66,14 +66,15 @@ TEST(AVLTreeTest, erase_node_with_two_children) {
 
 TEST(AVLTreeTest, balance_after_insert) {
     AVL_Tree<int> tree;
-    tree.insert(tree.root, 10);
-    tree.insert(tree.root, 20);
-    tree.insert(tree.root, 30);
+  tree.insert(tree.root, 10);
+  tree.insert(tree.root, 20);
+  tree.insert(tree.root, 30);
 
-    EXPECT_EQ(tree.getHeight(tree.root), 1);
-    EXPECT_EQ(tree.root->value, 20);
-    EXPECT_EQ(tree.root->left->value, 10);
-    EXPECT_EQ(tree.root->right->value, 30);
+  EXPECT_EQ(tree.root->value, 20);
+  EXPECT_EQ(tree.root->left->value, 10);
+  EXPECT_EQ(tree.root->right->value, 30);
+
+  EXPECT_EQ(tree.getHeight(tree.root), 2);
 }
 
 TEST(AVLTreeTest, balance_after_erase) {
